@@ -42,6 +42,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" />
 
+        <TextView
+            android:id="@+id/text_not_exist_json"
+            android:text="Hello World!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp" />
     </LinearLayout>
 
 </ScrollView>

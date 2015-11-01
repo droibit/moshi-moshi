@@ -3,6 +3,7 @@ package com.droibit.moshimoshi
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 import com.droibit.moshimoshi.entity.*
 import com.squareup.moshi.Moshi
 
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         showNamedArticleJson()
         showArticleListJson()
         showAdapterJson()
+        showNotExistFieldJson()
     }
 
     // JSONへの変換および復元
@@ -82,5 +84,19 @@ class MainActivity : AppCompatActivity() {
         val convertedArticleJsonString = adapter.toJson(article)
 
         (findViewById(R.id.text_adapter_json) as TextView).text = convertedArticleJsonString + "\n" + article.toString()
+    }
+
+    private fun showNotExistFieldJson() {
+        val moshi = Moshi.Builder().build()
+        val adapter = moshi.adapter(Article::class.java)
+
+        val json = "{\"author\":{\"name\":\"droibit\"},\"id\":\"10\",\"title\":\"MoshiMoshi\"}";
+        val restoreArticle = adapter.fromJson(json)
+
+        (findViewById(R.id.text_not_exist_json) as TextView).text = json + "\n" + restoreArticle.toString()
+
+        if (restoreArticle.author.id == null) {
+            Toast.makeText(this, "article id == null", Toast.LENGTH_SHORT).show()
+        }
     }
 }
