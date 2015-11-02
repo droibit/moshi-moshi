@@ -23,17 +23,21 @@ data class ArticleJson(val articleId: String, val articleTitle: String, val auth
 class ArticleJsonAdapter {
 
     @FromJson
-    fun articleFromJson(json: ArticleJson) = Article(
-            id = json.articleId,
-            title = json.articleTitle,
-            author = Author(json.authorId, name = json.authorName)
-    )
+    fun articleFromJson(json: ArticleJson): Article {
+        return Article(
+                id = json.articleId,
+                title = json.articleTitle,
+                author = Author(json.authorId, name = json.authorName)
+        )
+    }
 
     @ToJson
-    fun articleToJson(article: Article) = ArticleJson(
-            articleId = article.id,
-            articleTitle = article.title,
-            authorId = article.author.id,
-            authorName = article.author.name
-    )
+    fun articleToJson(article: Article): ArticleJson {
+        return ArticleJson(
+                articleId = article.id,
+                articleTitle = article.title,
+                authorId = article.author.id,
+                authorName = article.author.name
+        )
+    }
 }

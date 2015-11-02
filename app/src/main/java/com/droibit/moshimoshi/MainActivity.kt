@@ -1,11 +1,13 @@
 package com.droibit.moshimoshi
 
+import android.net.Uri
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import com.droibit.moshimoshi.adapter.UriAdapter
 import com.droibit.moshimoshi.entity.*
 import com.droibit.moshimoshi.net.WeatherService
 import com.squareup.moshi.Moshi
@@ -75,19 +77,15 @@ class MainActivity : AppCompatActivity() {
                          .add(ArticleJsonAdapter())
                          .build()
 
-        val articleJson = ArticleJson(
-                articleId = "15",
-                articleTitle = "Adapter_Moshi",
-                authorId = "1",
-                authorName = "droibit"
-        )
-        val articleJsonString = moshi.adapter(ArticleJson::class.java).toJson(articleJson)
+        val articleJsonString = "{\"articleId\":\"15\",\"articleTitle\":\"Adapter_Moshi\",\"authorId\":\"1\",\"authorName\":\"droibit\"}";
 
         val adapter = moshi.adapter(Article::class.java)
         // ArticleJsonオブジェクトのJSONからArticleオブジェクトを生成
         val article = adapter.fromJson(articleJsonString)
         // ArticleオブジェクトからArticleJsonオブジェクトのJSONを生成
         val convertedArticleJsonString = adapter.toJson(article)
+
+        assert(articleJsonString == convertedArticleJsonString)
 
         (findViewById(R.id.text_adapter_json) as TextView).text = convertedArticleJsonString + "\n" + article.toString()
     }
@@ -107,7 +105,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showWeatherJson() {
-        val moshi = Moshi.Builder().build()
+        val moshi = Moshi.Builder()
+                         .add(UriAdapter.FACTORY)
+                         .build()
         val retrofit = Retrofit.Builder()
                 .baseUrl("http://weather.livedoor.com")
                 .addConverterFactory(MoshiConverterFactory.create(moshi))

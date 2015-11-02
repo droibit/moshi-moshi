@@ -1,5 +1,7 @@
 package com.droibit.moshimoshi.entity
 
+import android.net.Uri
+
 /**
  * livedoor[お天気Webサービス](http://weather.livedoor.com/weather_hacks/webservice)
  *
@@ -11,15 +13,17 @@ package com.droibit.moshimoshi.entity
  * @property publicTime 天気予報発表時刻
  * @property description 天気概況文
  * @property forecasts 都府県天気予報の予報日毎の配列
+ * @property pinpointLocation ピンポイント予報の発表地点の配列
  * @property copyright コピーライト
  */
 data class Weather(
         val location: Location,
         val title: String,
-        val link: String,
+        val link: Uri,
         val publicTime: String,
         val description: Description,
         val forecasts: List<Forecast>,
+        val pinpointLocation: PinpointLocation,
         val copyright: Copyright
 )
 
@@ -70,7 +74,7 @@ data class Forecast(
 data class Image(
         val title: String,
         val link: String,
-        val url: String,
+        val url: Uri,
         val width: Int,
         val height: Int
 )
@@ -89,7 +93,7 @@ data class Temperature(
  * @property name 市区町村名
  */
 data class PinpointLocation(
-        val link: String,
+        val link: Uri,
         val name: String
 )
 
@@ -101,7 +105,7 @@ data class PinpointLocation(
  */
 data class Copyright(
         val provider: List<Provider>,
-        val link: String,
+        val link: Uri,
         val title: String,
         val image: Image
 )
@@ -111,6 +115,6 @@ data class Copyright(
  * @property name 気象データの配信元の名前
  */
 data class Provider(
-        val link: String,
+        val link: Uri,
         val name: String
 )
