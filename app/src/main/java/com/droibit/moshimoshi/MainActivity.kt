@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         val json = adapter.toJson(article)
         val restoreArticle = adapter.fromJson(json)
 
+        assert(article == restoreArticle)
+
         (findViewById(R.id.text_json) as TextView).text = json + "\n" + restoreArticle.toString()
     }
 
@@ -53,6 +55,8 @@ class MainActivity : AppCompatActivity() {
                                   author = NamedAuthor(id = "1", name = "droibit"))
         val json = adapter.toJson(article)
         val restoreArticle = adapter.fromJson(json)
+
+        assert(article == restoreArticle)
 
         (findViewById(R.id.text_custom_json) as TextView).text = json + "\n" + restoreArticle.toString()
     }
@@ -68,6 +72,8 @@ class MainActivity : AppCompatActivity() {
         )
         val json = adapter.toJson(articles)
         val restoreArticles = adapter.fromJson(json)
+
+        assert(articles == restoreArticles)
 
         (findViewById(R.id.text_list_json) as TextView).text = json + "\n" + restoreArticles.toString()
     }

@@ -8,9 +8,17 @@ import com.squareup.moshi.ToJson
 /**
  * @author kumagai
  */
-data class Article(val id: String, val title: String, val author: Author)
+data class Article(
+        val id: String,
+        val title: String,
+        val author: Author
+)
 
-data class NamedArticle(@Json(name = "articleId") val id: String, val title: String, val author: NamedAuthor)
+data class NamedArticle(
+        @Json(name = "articleId") val id: String,
+                                  val title: String,
+                                  val author: NamedAuthor
+)
 
 data class Articles(val articles: List<Article>) {
     companion object {
@@ -18,7 +26,12 @@ data class Articles(val articles: List<Article>) {
     }
 }
 
-data class ArticleJson(val articleId: String, val articleTitle: String, val authorId: String, val authorName: String)
+data class ArticleJson(
+        val articleId: String,
+        val articleTitle: String,
+        val authorId: String,
+        val authorName: String
+)
 
 class ArticleJsonAdapter {
 

@@ -3,7 +3,7 @@ package com.droibit.moshimoshi.entity
 import android.net.Uri
 
 /**
- * livedoor[お天気Webサービス](http://weather.livedoor.com/weather_hacks/webservice)
+ * [livedoor お天気Webサービス](http://weather.livedoor.com/weather_hacks/webservice)
  *
  * @author kumagai
  *
