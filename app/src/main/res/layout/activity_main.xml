@@ -48,6 +48,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/text_weather_json"
+            android:text="Hello World!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp" />
     </LinearLayout>
 
 </ScrollView>

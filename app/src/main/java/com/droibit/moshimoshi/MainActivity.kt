@@ -1,11 +1,16 @@
 package com.droibit.moshimoshi
 
+import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import com.droibit.moshimoshi.entity.*
+import com.droibit.moshimoshi.net.WeatherService
 import com.squareup.moshi.Moshi
+import retrofit.MoshiConverterFactory
+import retrofit.Retrofit
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         showArticleListJson()
         showAdapterJson()
         showNotExistFieldJson()
+        showWeatherJson()
     }
 
     // JSONへの変換および復元
@@ -98,5 +104,31 @@ class MainActivity : AppCompatActivity() {
         if (restoreArticle.author.id == null) {
             Toast.makeText(this, "article id == null", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun showWeatherJson() {
+        val moshi = Moshi.Builder().build()
+        val retrofit = Retrofit.Builder()
+                .baseUrl("http://weather.livedoor.com")
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .build()
+        val service = retrofit.create(WeatherService::class.java)
+
+        object: AsyncTask<Unit, Unit, Weather>() {
+            override fun doInBackground(vararg params: Unit?): Weather? {
+                // 東京の天気
+                try {
+                    val response = service.weather("130010").execute()
+                    return response?.body()
+                } catch (e: Exception) {
+                    Log.e(BuildConfig.BUILD_TYPE, "Network Error: ", e)
+                }
+                return null
+            }
+
+            override fun onPostExecute(result: Weather?) {
+                (findViewById(R.id.text_weather_json) as TextView).text = result?.toString()
+            }
+        }.execute()
     }
 }
