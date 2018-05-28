@@ -5,8 +5,6 @@ import android.net.Uri
 /**
  * [livedoor お天気Webサービス](http://weather.livedoor.com/weather_hacks/webservice)
  *
- * @author kumagai
- *
  * @property location 予報を発表した地域
  * @property title タイトル
  * @property link 天気予報のURL
@@ -17,14 +15,14 @@ import android.net.Uri
  * @property copyright コピーライト
  */
 data class Weather(
-        val location: Location,
-        val title: String,
-        val link: Uri,
-        val publicTime: String,
-        val description: Description,
-        val forecasts: List<Forecast>,
-        val pinpointLocation: PinpointLocation,
-        val copyright: Copyright
+  val location: Location,
+  val title: String,
+  val link: Uri,
+  val publicTime: String,
+  val description: Description,
+  val forecasts: List<Forecast>,
+  val pinpointLocation: PinpointLocation,
+  val copyright: Copyright
 )
 
 /**
@@ -33,9 +31,9 @@ data class Weather(
  * @property city 一時細分区名（八幡）
  */
 data class Location(
-        val area: String,
-        val pref: String,
-        val city: String
+  val area: String,
+  val pref: String,
+  val city: String
 )
 
 /**
@@ -43,8 +41,8 @@ data class Location(
  * @property publicTime 発表時刻
  */
 data class Description(
-        val text: String,
-        val publicTime: String
+  val text: String,
+  val publicTime: String
 )
 
 /**
@@ -56,12 +54,12 @@ data class Description(
  * @property max 最低気温
  */
 data class Forecast(
-        val date: String,
-        val dateLabel: String,
-        val telop: String,
-        val image: Image,
-        val min: Temperature,
-        val max: Temperature
+  val date: String,
+  val dateLabel: String,
+  val telop: String,
+  val image: Image,
+  val min: Temperature,
+  val max: Temperature
 )
 
 /**
@@ -72,11 +70,11 @@ data class Forecast(
  * @property height 天気アイコンの高さ
  */
 data class Image(
-        val title: String,
-        val link: String,
-        val url: Uri,
-        val width: Int,
-        val height: Int
+  val title: String,
+  val link: String,
+  val url: Uri,
+  val width: Int,
+  val height: Int
 )
 
 /**
@@ -84,8 +82,8 @@ data class Image(
  * @property fahrenheit 華氏
  */
 data class Temperature(
-        val celsius: String,
-        val fahrenheit: String
+  val celsius: String,
+  val fahrenheit: String
 )
 
 /**
@@ -93,8 +91,8 @@ data class Temperature(
  * @property name 市区町村名
  */
 data class PinpointLocation(
-        val link: Uri,
-        val name: String
+  val link: Uri,
+  val name: String
 )
 
 /**
@@ -104,10 +102,10 @@ data class PinpointLocation(
  * @property image livedoor 天気情報へのURL、アイコンなど
  */
 data class Copyright(
-        val provider: List<Provider>,
-        val link: Uri,
-        val title: String,
-        val image: Image
+  val provider: List<Provider>,
+  val link: Uri,
+  val title: String,
+  val image: Image
 )
 
 /**
@@ -115,6 +113,6 @@ data class Copyright(
  * @property name 気象データの配信元の名前
  */
 data class Provider(
-        val link: Uri,
-        val name: String
+  val link: Uri,
+  val name: String
 )

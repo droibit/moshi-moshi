@@ -2,15 +2,12 @@ package com.droibit.moshimoshi.entity
 
 import com.squareup.moshi.Json
 
-/**
- * @author kumagai
- */
 data class Author(
-        val id: String = "none",
-        val name: String = ""
+  val id: String = "none",
+  val name: String = ""
 )
 
 data class NamedAuthor(
-        @Json(name = "authorId") val id: String,
-                                 val name: String
+  @Json(name = "authorId") val id: String,
+  val name: String
 )

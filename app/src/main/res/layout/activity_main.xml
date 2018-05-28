@@ -16,41 +16,41 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text_json"
+            android:id="@+id/textJson"
             android:text="Hello World!"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" />
 
         <TextView
-            android:id="@+id/text_custom_json"
+            android:id="@+id/textCustomJson"
             android:text="Hello World!"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/text_list_json"
+            android:id="@+id/textListJson"
             android:text="Hello World!"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" />
 
         <TextView
-            android:id="@+id/text_adapter_json"
+            android:id="@+id/textAdapterJson"
             android:text="Hello World!"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" />
 
         <TextView
-            android:id="@+id/text_not_exist_json"
+            android:id="@+id/textNotExistJson"
             android:text="Hello World!"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp" />
 
         <TextView
-            android:id="@+id/text_weather_json"
+            android:id="@+id/textWeatherJson"
             android:text="Hello World!"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
