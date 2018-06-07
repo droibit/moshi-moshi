@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_main.textJson
 import kotlinx.android.synthetic.main.activity_main.textListJson
 import kotlinx.android.synthetic.main.activity_main.textNotExistJson
 import kotlinx.android.synthetic.main.activity_main.textWeatherJson
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,6 +29,20 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainActivity : AppCompatActivity() {
+
+  private val moshi = Moshi.Builder()
+      .build()
+
+  private val service: WeatherService by lazy {
+    val moshi = moshi.newBuilder()
+        .add(UriAdapter.FACTORY)
+        .build()
+    Retrofit.Builder()
+        .baseUrl("http://weather.livedoor.com")
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .build()
+        .create(WeatherService::class.java)
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -44,9 +59,8 @@ class MainActivity : AppCompatActivity() {
   // JSONへの変換および復元
   @SuppressLint("SetTextI18n")
   private fun showArticleJson() {
-    val moshi = Moshi.Builder()
-        .build()
     val adapter = moshi.adapter(Article::class.java)
+        .indent("  ")
 
     val article = Article(
         id = "10",
@@ -54,9 +68,8 @@ class MainActivity : AppCompatActivity() {
         author = Author(id = "1", name = "droibit")
     )
     val json = adapter.toJson(article)
-    val restoreArticle = adapter.fromJson(json)
-
-    assert(article == restoreArticle)
+    val restoreArticle: Article = adapter.fromJson(json)!!
+    check(article == restoreArticle)
 
     textJson.text = "$json\n$restoreArticle"
   }
@@ -64,28 +77,24 @@ class MainActivity : AppCompatActivity() {
   // JSONのキー値をカスタマイズ
   @SuppressLint("SetTextI18n")
   private fun showNamedArticleJson() {
-    val moshi = Moshi.Builder()
-        .build()
     val adapter = moshi.adapter(NamedArticle::class.java)
-
+        .indent("  ")
     val article = NamedArticle(
         id = "11",
         title = "Named_MoshiMoshi",
         author = NamedAuthor(id = "1", name = "droibit")
     )
     val json = adapter.toJson(article)
-    val restoreArticle = adapter.fromJson(json)
-
-    assert(article == restoreArticle)
+    val restoreArticle: NamedArticle = adapter.fromJson(json)!!
+    check(article == restoreArticle)
 
     textCustomJson.text = "$json\n$restoreArticle"
   }
 
   @SuppressLint("SetTextI18n")
   private fun showArticleListJson() {
-    val moshi = Moshi.Builder()
-        .build()
     val adapter = moshi.adapter(Articles::class.java)
+        .indent("  ")
 
     val articles = Articles.of(
         Article("12", "Moshi1", Author("1", "droibit")),
@@ -93,16 +102,15 @@ class MainActivity : AppCompatActivity() {
         Article("14", "Moshi3", Author("3", "droibit3"))
     )
     val json = adapter.toJson(articles)
-    val restoreArticles = adapter.fromJson(json)
-
-    assert(articles == restoreArticles)
+    val restoreArticles: Articles = adapter.fromJson(json)!!
+    check(articles == restoreArticles)
 
     textListJson.text = "$json\n$restoreArticles"
   }
 
   @SuppressLint("SetTextI18n")
   private fun showAdapterJson() {
-    val moshi = Moshi.Builder()
+    val moshi = moshi.newBuilder()
         .add(ArticleJsonAdapter())
         .build()
 
@@ -110,26 +118,24 @@ class MainActivity : AppCompatActivity() {
       "{\"articleId\":\"15\",\"articleTitle\":\"Adapter_Moshi\",\"authorId\":\"1\",\"authorName\":\"droibit\"}";
 
     val adapter = moshi.adapter(Article::class.java)
+        .indent("  ")
     // ArticleJsonオブジェクトのJSONからArticleオブジェクトを生成
-    val article = adapter.fromJson(articleJsonString)
+    val article: Article = adapter.fromJson(articleJsonString)!!
     // ArticleオブジェクトからArticleJsonオブジェクトのJSONを生成
     val convertedArticleJsonString = adapter.toJson(article)
-
-    assert(articleJsonString == convertedArticleJsonString)
 
     textAdapterJson.text = "$convertedArticleJsonString\n$article"
   }
 
   @SuppressLint("SetTextI18n")
   private fun showNotExistFieldJson() {
-    val moshi = Moshi.Builder()
-        .build()
     val adapter = moshi.adapter(Article::class.java)
+        .indent("  ")
 
     val json = "{\"author\":{\"name\":\"droibit\"},\"id\":\"10\",\"title\":\"MoshiMoshi\"}";
-    val restoreArticle = adapter.fromJson(json)
+    val restoreArticle: Article? = adapter.fromJson(json)
 
-    textNotExistJson.text = "$json\n$restoreArticle"
+    textNotExistJson.text = "${JSONObject(json).toString(2)}\n$restoreArticle"
 
     if (restoreArticle?.author?.id == null) {
       Toast.makeText(this, "article id == null", Toast.LENGTH_SHORT)
@@ -138,15 +144,6 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun showWeatherJson() {
-    val moshi = Moshi.Builder()
-        .add(UriAdapter.FACTORY)
-        .build()
-    val retrofit = Retrofit.Builder()
-        .baseUrl("http://weather.livedoor.com")
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .build()
-    val service = retrofit.create(WeatherService::class.java)
-
     service.weather("130010")
         .enqueue(object : Callback<Weather> {
           override fun onFailure(
@@ -154,6 +151,7 @@ class MainActivity : AppCompatActivity() {
             t: Throwable
           ) {
             Log.e(BuildConfig.BUILD_TYPE, "", t)
+            textWeatherJson.text = t.toString()
           }
 
           override fun onResponse(

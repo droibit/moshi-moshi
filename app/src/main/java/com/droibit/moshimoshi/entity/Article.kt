@@ -22,7 +22,7 @@ data class Articles(val articles: List<Article>) {
   }
 }
 
-data class ArticleJson(
+data class FlatArticle(
   val articleId: String,
   val articleTitle: String,
   val authorId: String,
@@ -32,7 +32,7 @@ data class ArticleJson(
 class ArticleJsonAdapter {
 
   @FromJson
-  fun articleFromJson(json: ArticleJson): Article {
+  fun articleFromJson(json: FlatArticle): Article {
     return Article(
         id = json.articleId,
         title = json.articleTitle,
@@ -41,8 +41,8 @@ class ArticleJsonAdapter {
   }
 
   @ToJson
-  fun articleToJson(article: Article): ArticleJson {
-    return ArticleJson(
+  fun articleToJson(article: Article): FlatArticle {
+    return FlatArticle(
         articleId = article.id,
         articleTitle = article.title,
         authorId = article.author.id,
