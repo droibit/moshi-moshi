@@ -99,6 +99,22 @@
         />
 
     <TextView
+        android:id="@+id/codegenJson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        android:textColor="@android:color/black"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/darker_gray"
+        />
+
+    <TextView
         android:id="@+id/textWeatherJson"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

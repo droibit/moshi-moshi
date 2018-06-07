@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
   compileSdkVersion 27
@@ -32,6 +33,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
   implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
   implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-  implementation 'com.squareup.moshi:moshi:1.6.0'
+  implementation "com.squareup.moshi:moshi:$moshi_version"
+  kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
   testImplementation 'junit:junit:4.12'
 }

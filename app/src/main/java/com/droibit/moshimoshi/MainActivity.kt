@@ -4,17 +4,19 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.Toast
 import com.droibit.moshimoshi.adapter.UriAdapter
 import com.droibit.moshimoshi.entity.Article
 import com.droibit.moshimoshi.entity.ArticleJsonAdapter
 import com.droibit.moshimoshi.entity.Articles
 import com.droibit.moshimoshi.entity.Author
+import com.droibit.moshimoshi.entity.CodegenArticle
 import com.droibit.moshimoshi.entity.NamedArticle
 import com.droibit.moshimoshi.entity.NamedAuthor
 import com.droibit.moshimoshi.entity.Weather
 import com.droibit.moshimoshi.net.WeatherService
+import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
+import kotlinx.android.synthetic.main.activity_main.codegenJson
 import kotlinx.android.synthetic.main.activity_main.textAdapterJson
 import kotlinx.android.synthetic.main.activity_main.textCustomJson
 import kotlinx.android.synthetic.main.activity_main.textJson
@@ -51,12 +53,12 @@ class MainActivity : AppCompatActivity() {
     showArticleJson()
     showNamedArticleJson()
     showArticleListJson()
-    showAdapterJson()
+    showArticleJsonWithAdapter()
     showNotExistFieldJson()
+    showCodegenArticleJson()
     showWeatherJson()
   }
 
-  // JSONへの変換および復元
   @SuppressLint("SetTextI18n")
   private fun showArticleJson() {
     val adapter = moshi.adapter(Article::class.java)
@@ -74,7 +76,6 @@ class MainActivity : AppCompatActivity() {
     textJson.text = "$json\n$restoreArticle"
   }
 
-  // JSONのキー値をカスタマイズ
   @SuppressLint("SetTextI18n")
   private fun showNamedArticleJson() {
     val adapter = moshi.adapter(NamedArticle::class.java)
@@ -109,19 +110,17 @@ class MainActivity : AppCompatActivity() {
   }
 
   @SuppressLint("SetTextI18n")
-  private fun showAdapterJson() {
+  private fun showArticleJsonWithAdapter() {
     val moshi = moshi.newBuilder()
         .add(ArticleJsonAdapter())
         .build()
 
     val articleJsonString =
-      "{\"articleId\":\"15\",\"articleTitle\":\"Adapter_Moshi\",\"authorId\":\"1\",\"authorName\":\"droibit\"}";
+      "{\"articleId\":\"15\",\"articleTitle\":\"Adapter_Moshi\",\"authorId\":\"1\",\"authorName\":\"droibit\"}"
 
     val adapter = moshi.adapter(Article::class.java)
         .indent("  ")
-    // ArticleJsonオブジェクトのJSONからArticleオブジェクトを生成
     val article: Article = adapter.fromJson(articleJsonString)!!
-    // ArticleオブジェクトからArticleJsonオブジェクトのJSONを生成
     val convertedArticleJsonString = adapter.toJson(article)
 
     textAdapterJson.text = "$convertedArticleJsonString\n$article"
@@ -132,15 +131,29 @@ class MainActivity : AppCompatActivity() {
     val adapter = moshi.adapter(Article::class.java)
         .indent("  ")
 
-    val json = "{\"author\":{\"name\":\"droibit\"},\"id\":\"10\",\"title\":\"MoshiMoshi\"}";
-    val restoreArticle: Article? = adapter.fromJson(json)
+    val json = "{\"author\":{\"name\":\"droibit\"},\"title\":\"MoshiMoshi\"}"
+    val restoreArticle: Article = adapter.fromJson(json)!!
 
     textNotExistJson.text = "${JSONObject(json).toString(2)}\n$restoreArticle"
+    Log.e(BuildConfig.BUILD_TYPE, "article id == null")
+  }
 
-    if (restoreArticle?.author?.id == null) {
-      Toast.makeText(this, "article id == null", Toast.LENGTH_SHORT)
-          .show()
+  @SuppressLint("SetTextI18n")
+  private fun showCodegenArticleJson() {
+    val adapter = moshi.adapter(CodegenArticle::class.java)
+        .indent("  ")
+
+    try {
+      val invalidJson = "{\"author\":{\"name\":\"droibit\"},\"title\":\"MoshiMoshi\"}"
+      adapter.fromJson(invalidJson)!!
+    } catch (e: JsonDataException) {
+      Log.e(BuildConfig.BUILD_TYPE, e.toString())
     }
+
+    val validJson =
+      "{\"title\":\"MoshiMoshi\",\"id\":\"10\",\"author\":{\"id\":\"2\",\"name\":\"droibit\"}}"
+    val restoreArticle: CodegenArticle = adapter.fromJson(validJson)!!
+    codegenJson.text = "${JSONObject(validJson).toString(2)}\n$restoreArticle"
   }
 
   private fun showWeatherJson() {

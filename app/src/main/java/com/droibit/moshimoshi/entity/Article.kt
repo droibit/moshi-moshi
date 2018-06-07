@@ -2,6 +2,7 @@ package com.droibit.moshimoshi.entity
 
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import com.squareup.moshi.ToJson
 
 data class Article(
@@ -50,3 +51,10 @@ class ArticleJsonAdapter {
     )
   }
 }
+
+@JsonClass(generateAdapter = true)
+data class CodegenArticle(
+  val id: String,
+  val title: String,
+  val author: CodegenAuthor
+)
