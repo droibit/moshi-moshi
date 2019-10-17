@@ -144,14 +144,14 @@ class MainActivity : AppCompatActivity() {
         .indent("  ")
 
     try {
-      val invalidJson = "{\"author\":{\"name\":\"droibit\"},\"title\":\"MoshiMoshi\"}"
+      val invalidJson = "{\"author\":{\"name\":\"droibit\"},\"title\":\"MoshiMoshi\", \"nested\": {\"value\": \"nested\"}}"
       adapter.fromJson(invalidJson)!!
     } catch (e: JsonDataException) {
       Log.e(BuildConfig.BUILD_TYPE, e.toString())
     }
 
     val validJson =
-      "{\"title\":\"MoshiMoshi\",\"id\":\"10\",\"author\":{\"id\":\"2\",\"name\":\"droibit\"}}"
+      "{\"title\":\"MoshiMoshi\",\"id\":\"10\",\"author\":{\"id\":\"2\",\"name\":\"droibit\"}, \"nested\": {\"value\": \"nested\"}}"
     val restoreArticle: CodegenArticle = adapter.fromJson(validJson)!!
     codegenJson.text = "${JSONObject(validJson).toString(2)}\n$restoreArticle"
   }

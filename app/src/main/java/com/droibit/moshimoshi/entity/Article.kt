@@ -1,5 +1,6 @@
 package com.droibit.moshimoshi.entity
 
+import androidx.annotation.Keep
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -23,6 +24,7 @@ data class Articles(val articles: List<Article>) {
   }
 }
 
+@Keep
 data class FlatArticle(
   val articleId: String,
   val articleTitle: String,
@@ -56,5 +58,10 @@ class ArticleJsonAdapter {
 data class CodegenArticle(
   val id: String,
   val title: String,
-  val author: CodegenAuthor
-)
+  val author: CodegenAuthor,
+  val nested: Nested
+) {
+
+  @JsonClass(generateAdapter = true)
+  data class Nested(val value: String)
+}
